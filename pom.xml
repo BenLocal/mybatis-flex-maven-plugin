@@ -95,20 +95,4 @@
             </plugin>
         </plugins>
     </build>
-
-  <distributionManagement>
-        <!--涉及到权限，需要配置自己所属BU/BG的仓库 -->
-        <repository>
-            <id>mvn-releases</id>
-            <url>
-                https://depend.iflytek.com/artifactory/cbg-mvn-release-private/
-            </url>
-        </repository>
-        <snapshotRepository>
-            <id>mvn-snapshots</id>
-            <url>
-                https://depend.iflytek.com/artifactory/cbg-mvn-snapshot-private/
-            </url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>

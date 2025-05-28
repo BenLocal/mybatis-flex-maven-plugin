@@ -1,7 +1,6 @@
 package com.github.benshi.mybatis.flex.plugin;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -115,7 +114,7 @@ public class GeneratorMojo extends AbstractMojo {
             globalConfig.setUnGenerateTables(config.getExcludeTables());
         }
         globalConfig.enableEntity()
-                .setWithLombok(true)
+                .setWithLombok(false)
                 .setWithBaseClassEnable(true)
                 .setBaseOverwriteEnable(true)
                 .setAlwaysGenColumnAnnotation(true)
