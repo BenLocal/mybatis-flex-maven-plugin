@@ -10,12 +10,12 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
+import com.github.benshi.mybatis.handler.OptionalTypeHandlerFactory;
 import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.ColumnConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
-import com.mybatisflex.core.handler.OptionalTypeHandler;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Mojo(name = "generate", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
@@ -84,12 +84,18 @@ public class GeneratorMojo extends AbstractMojo {
 
             if (column.getColumnConfig() == null) {
                 ColumnConfig cc = new ColumnConfig()
-                        .setTypeHandler(OptionalTypeHandler.class);
+                        .setTypeHandler(
+                                OptionalTypeHandlerFactory.getInstance().getTypeHandlerClazz(column.getPropertyType()));
+                // ColumnConfig cc = new ColumnConfig()
+                // .setTypeHandler(
+                // OptionalTypeHandler.class);
                 column.setColumnConfig(cc);
             } else {
                 ColumnConfig cc = column.getColumnConfig();
                 if (cc.getTypeHandler() == null) {
-                    cc.setTypeHandler(OptionalTypeHandler.class);
+                    cc.setTypeHandler(
+                            OptionalTypeHandlerFactory.getInstance().getTypeHandlerClazz(column.getPropertyType()));
+                    // cc.setTypeHandler(OptionalTypeHandler.class);
                 }
             }
 
