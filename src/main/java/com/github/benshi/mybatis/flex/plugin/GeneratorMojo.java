@@ -42,49 +42,59 @@ public class GeneratorMojo extends AbstractMojo {
             return;
         }
 
-        renameJavaProperties(tables);
+        resetTables(tables);
 
         generator.generate(tables);
 
     }
 
-    private void renameJavaProperties(List<Table> tables) {
+    private void resetTables(List<Table> tables) {
         for (Table table : tables) {
             if (table.getColumns() == null || table.getColumns().isEmpty()) {
                 continue;
             }
 
             for (Column column : table.getColumns()) {
-                String columnName = column.getProperty();
-                if (JavaKeywordsUtils.isJavaKeyword(columnName) ||
-                        JavaKeywordsUtils.startWithNumberKeyword(columnName)) {
-                    // If the column name is a Java keyword or starts with a number,
-                    column.setProperty(renameProperty(columnName));
-                    getLog().warn(String.format(
-                            "Column '%s' in table '%s' is renamed to '%s' to avoid conflicts with Java keywords.",
-                            columnName, table.getName(), column.getProperty()));
-                }
+                // Reset the property name to the original column name
+                resetJavaProperties(table, column);
+                // Set the column as optional if it is nullable
+                setOptionalProperties(table, column);
+            }
+        }
+    }
 
-                if (column.getNullable() != null && column.getNullable() == 1) {
-                    getLog().info(String.format(
-                            "Column '%s' in table '%s' is nullable, changing type to java.util.Optional<%s>.",
-                            columnName, table.getName(), column.getPropertyType()));
+    private void resetJavaProperties(Table table, Column column) {
+        String columnName = column.getProperty();
+        if (JavaKeywordsUtils.isJavaKeyword(columnName) ||
+                JavaKeywordsUtils.startWithNumberKeyword(columnName)) {
+            // If the column name is a Java keyword or starts with a number,
+            column.setProperty(renameProperty(columnName));
+            getLog().warn(String.format(
+                    "Column '%s' in table '%s' is renamed to '%s' to avoid conflicts with Java keywords.",
+                    columnName, table.getName(), column.getProperty()));
+        }
+    }
 
-                    if (column.getColumnConfig() == null) {
-                        ColumnConfig cc = new ColumnConfig()
-                                .setTypeHandler(OptionalTypeHandler.class);
-                        column.setColumnConfig(cc);
-                    } else {
-                        ColumnConfig cc = column.getColumnConfig();
-                        if (cc.getTypeHandler() == null) {
-                            cc.setTypeHandler(OptionalTypeHandler.class);
-                        }
-                    }
+    private void setOptionalProperties(Table table, Column column) {
+        String columnName = column.getProperty();
+        if (column.getNullable() != null && column.getNullable() == 1) {
+            getLog().info(String.format(
+                    "Column '%s' in table '%s' is nullable, changing type to java.util.Optional<%s>.",
+                    columnName, table.getName(), column.getPropertyType()));
 
-                    // Change the property type to Optional<>
-                    column.setPropertyType("java.util.Optional<" + column.getPropertyType() + ">");
+            if (column.getColumnConfig() == null) {
+                ColumnConfig cc = new ColumnConfig()
+                        .setTypeHandler(OptionalTypeHandler.class);
+                column.setColumnConfig(cc);
+            } else {
+                ColumnConfig cc = column.getColumnConfig();
+                if (cc.getTypeHandler() == null) {
+                    cc.setTypeHandler(OptionalTypeHandler.class);
                 }
             }
+
+            // Change the property type to Optional<>
+            column.setPropertyType("java.util.Optional<" + column.getPropertyType() + ">");
         }
     }
 
