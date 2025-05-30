@@ -68,7 +68,7 @@ public class GeneratorMojo extends AbstractMojo {
         if (JavaKeywordsUtils.isJavaKeyword(columnName) ||
                 JavaKeywordsUtils.startWithNumberKeyword(columnName)) {
             // If the column name is a Java keyword or starts with a number,
-            column.setProperty(renameProperty(columnName));
+            // column.setProperty(renameProperty(columnName));
             getLog().warn(String.format(
                     "Column '%s' in table '%s' is renamed to '%s' to avoid conflicts with Java keywords.",
                     columnName, table.getName(), column.getProperty()));
@@ -86,16 +86,12 @@ public class GeneratorMojo extends AbstractMojo {
                 ColumnConfig cc = new ColumnConfig()
                         .setTypeHandler(
                                 OptionalTypeHandlerFactory.getInstance().getTypeHandlerClazz(column.getPropertyType()));
-                // ColumnConfig cc = new ColumnConfig()
-                // .setTypeHandler(
-                // OptionalTypeHandler.class);
                 column.setColumnConfig(cc);
             } else {
                 ColumnConfig cc = column.getColumnConfig();
                 if (cc.getTypeHandler() == null) {
                     cc.setTypeHandler(
                             OptionalTypeHandlerFactory.getInstance().getTypeHandlerClazz(column.getPropertyType()));
-                    // cc.setTypeHandler(OptionalTypeHandler.class);
                 }
             }
 
