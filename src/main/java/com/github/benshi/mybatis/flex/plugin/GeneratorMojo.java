@@ -68,7 +68,7 @@ public class GeneratorMojo extends AbstractMojo {
         if (JavaKeywordsUtils.isJavaKeyword(columnName) ||
                 JavaKeywordsUtils.startWithNumberKeyword(columnName)) {
             // If the column name is a Java keyword or starts with a number,
-            // column.setProperty(renameProperty(columnName));
+            column.setProperty(renameProperty(columnName));
             getLog().warn(String.format(
                     "Column '%s' in table '%s' is renamed to '%s' to avoid conflicts with Java keywords.",
                     columnName, table.getName(), column.getProperty()));

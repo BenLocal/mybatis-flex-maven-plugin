@@ -43,11 +43,17 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>com.mybatis-flex</groupId>
             <artifactId>mybatis-flex-codegen</artifactId>
             <version>${mybatis-flex-codegen.version}</version>
+        </dependency> -->
+        <dependency>
+            <groupId>com.github.benlocal.mybatis-flex</groupId>
+            <artifactId>mybatis-flex-codegen</artifactId>
+            <version>self-SNAPSHOT</version>
         </dependency>
+
 
         <dependency>
             <groupId>com.mybatis-flex</groupId>
