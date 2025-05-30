@@ -85,13 +85,13 @@ public class GeneratorMojo extends AbstractMojo {
             if (column.getColumnConfig() == null) {
                 ColumnConfig cc = new ColumnConfig()
                         .setTypeHandler(
-                                OptionalTypeHandlerFactory.getInstance().getTypeHandlerClazz(column.getPropertyType()));
+                                OptionalTypeHandlerFactory.getTypeHandlerClazz(column.getPropertyType()));
                 column.setColumnConfig(cc);
             } else {
                 ColumnConfig cc = column.getColumnConfig();
                 if (cc.getTypeHandler() == null) {
                     cc.setTypeHandler(
-                            OptionalTypeHandlerFactory.getInstance().getTypeHandlerClazz(column.getPropertyType()));
+                            OptionalTypeHandlerFactory.getTypeHandlerClazz(column.getPropertyType()));
                 }
             }
 
