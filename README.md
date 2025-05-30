@@ -11,22 +11,41 @@ mybatis-flex-maven-plugin
 1. Add the JitPack repository to your build file
 
 ```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </pluginRepository>
+    </pluginRepositories>
 ```
 
-2. Add the dependency
+2. Add the plugins
 
 - mybatis-flex-maven-plugin
 
 ```xml
-<dependency>
-    <groupId>com.github.benlocal</groupId>
-    <artifactId>mybatis-flex-maven-plugin</artifactId>
-    <version>main-SNAPSHOT</version>
-</dependency>
+<build>
+    <plugins>
+        <plugin>
+            <groupId>com.github.benlocal</groupId>
+            <artifactId>mybatis-flex-maven-plugin</artifactId>
+            <version>main-SNAPSHOT</version>
+            <configuration>
+                <config>
+                    <jdbcUrl>jdbc:mysql://localhost:3306/worker</jdbcUrl>
+                    <username>root</username>
+                    <password>root</password>
+                    <packageName>com.example.test.model</packageName>
+                </config>
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
 ```

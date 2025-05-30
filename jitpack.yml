@@ -1,0 +1,2 @@
+before_install:
+  - find . -name "pom.xml" | xargs sed -i "s/<version>main-SNAPSHOT<\/version>/<version>${VERSION}<\/version>/g"
