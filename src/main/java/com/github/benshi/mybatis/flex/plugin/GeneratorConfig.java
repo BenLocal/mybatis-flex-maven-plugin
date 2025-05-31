@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.maven.plugins.annotations.Parameter;
+import org.eclipse.sisu.Parameters;
 
 public class GeneratorConfig {
     @Parameter(required = true)
@@ -26,6 +27,23 @@ public class GeneratorConfig {
 
     @Parameter
     private Set<String> excludeTables = new HashSet<>();
+
+    @Parameters
+    private boolean generateMapper;
+
+    /**
+     * @return the generateMapper
+     */
+    public boolean isGenerateMapper() {
+        return generateMapper;
+    }
+
+    /**
+     * @param generateMapper the generateMapper to set
+     */
+    public void setGenerateMapper(boolean generateMapper) {
+        this.generateMapper = generateMapper;
+    }
 
     public String getJdbcUrl() {
         return jdbcUrl;

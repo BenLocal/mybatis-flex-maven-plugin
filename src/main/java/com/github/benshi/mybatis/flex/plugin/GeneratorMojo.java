@@ -126,13 +126,21 @@ public class GeneratorMojo extends AbstractMojo {
             globalConfig.setUnGenerateTables(config.getExcludeTables());
         }
         globalConfig.enableEntity()
-                .setWithLombok(false)
                 .setWithBaseClassEnable(true)
                 .setBaseOverwriteEnable(true)
                 .setAlwaysGenColumnAnnotation(true)
                 .setOverwriteEnable(false)
+                // Disable the generation of Lombok annotations
+                // and constructors to avoid conflicts with Lombok
+                // and to keep the generated code clean.
+                .setWithLombok(false)
                 .setLombokNoArgsConstructorEnable(false)
-                .setLombokNoArgsConstructorEnable(false);
+                .setLombokAllArgsConstructorEnable(false)
+                .setWithActiveRecord(false);
+
+        if (config.isGenerateMapper()) {
+            globalConfig.enableMapper();
+        }
 
         return globalConfig;
     }
