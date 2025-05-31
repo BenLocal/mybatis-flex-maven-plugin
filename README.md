@@ -1,10 +1,34 @@
 # mybatis-flex-maven-plugin
 
-mybatis-flex-maven-plugin
-
 [![](https://jitpack.io/v/benlocal/mybatis-flex-maven-plugin.svg?style=flat-square)](https://jitpack.io/#benlocal/mybatis-flex-maven-plugin)
 ![Weekly download statistics](https://jitpack.io/v/benlocal/mybatis-flex-maven-plugin/week.svg)
 ![Monthly download statistics](https://jitpack.io/v/benlocal/mybatis-flex-maven-plugin/month.svg)
+
+## Introduction
+
+mybatis-flex-maven-plugin is a Maven code generation plugin based on the MyBatis-Flex framework, designed to automatically generate database entity classes, Mapper interfaces, and other code files. This plugin significantly simplifies the development process and improves development efficiency.
+
+### Key Features
+
+- **Automatic Code Generation**: Automatically generates corresponding entity classes based on database table structures
+- **Java Keyword Handling**: Automatically handles Java keyword conflicts to avoid compilation errors
+- **Nullable Field Optimization**: Automatically converts nullable fields to `java.util.Optional<T>` types
+- **Flexible Configuration**: Supports include/exclude configuration for specific tables
+- **Maven Integration**: Seamlessly integrates into the Maven build lifecycle
+
+### Core Functionality
+
+1. **Smart Property Renaming**: Automatically renames properties when database column names are Java keywords or start with numbers
+2. **Optional Type Support**: Generates Optional wrapper types for nullable fields, providing better null value handling
+3. **Custom Type Handlers**: Integrates with mybatis-helper library to provide TypeHandlers for Optional types
+4. **Batch Table Processing**: Supports simultaneous code generation for multiple database tables
+
+### Use Cases
+
+- Quickly scaffold projects based on MyBatis-Flex
+- Automate database-to-Java entity mapping
+- Need safer null value handling (using Optional)
+- Avoid Java keyword conflicts
 
 ### Used
 
@@ -48,4 +72,23 @@ mybatis-flex-maven-plugin
         </plugin>
     </plugins>
 </build>
+```
+
+# mybatis-helper dependency
+
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+```
+
+```xml
+<dependency>
+    <groupId>com.github.benlocal</groupId>
+    <artifactId>mybatis-helper</artifactId>
+    <version>main-SNAPSHOT</version>
+</dependency>
 ```
