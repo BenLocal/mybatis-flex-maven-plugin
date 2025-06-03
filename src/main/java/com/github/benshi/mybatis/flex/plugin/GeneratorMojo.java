@@ -123,6 +123,7 @@ public class GeneratorMojo extends AbstractMojo {
 
     private GlobalConfig createGlobalConfig() {
         GlobalConfig globalConfig = new GlobalConfig();
+        globalConfig.setSourceDir(project.getBasedir().getAbsolutePath() + "/src/main/java");
         globalConfig.setBasePackage(config.getPackageName());
 
         if (config.getIncludeTables() != null &&
