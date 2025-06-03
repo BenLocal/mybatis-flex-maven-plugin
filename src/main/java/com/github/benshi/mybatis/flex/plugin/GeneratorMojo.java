@@ -23,11 +23,19 @@ public class GeneratorMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject project;
 
+    @Parameter(property = "flex.gen.skip", defaultValue = "false")
+    private boolean skip;
+
     @Parameter
     private GeneratorConfig config;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        if (skip) {
+            getLog().info("Skipping MyBatis-Flex code generation (flex.gen.skip = true)");
+            return;
+        }
+
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(config.getJdbcUrl());
         dataSource.setUsername(config.getUsername());
@@ -139,7 +147,8 @@ public class GeneratorMojo extends AbstractMojo {
                 .setWithActiveRecord(false);
 
         if (config.isGenerateMapper()) {
-            globalConfig.enableMapper();
+            globalConfig.enableMapper()
+                    .setMapperAnnotation(true);
         }
 
         return globalConfig;

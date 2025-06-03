@@ -92,3 +92,52 @@ mybatis-flex-maven-plugin is a Maven code generation plugin based on the MyBatis
     <version>main-SNAPSHOT</version>
 </dependency>
 ```
+
+### Configuration Options
+
+| Parameter        | Type           | Default | Description                                    |
+| ---------------- | -------------- | ------- | ---------------------------------------------- |
+| `jdbcUrl`        | `String`       | -       | Database JDBC URL                              |
+| `username`       | `String`       | -       | Database username                              |
+| `password`       | `String`       | -       | Database password                              |
+| `packageName`    | `String`       | -       | Target package name for generated classes      |
+| `includeTables`  | `List<String>` | -       | List of tables to include in code generation   |
+| `excludeTables`  | `List<String>` | -       | List of tables to exclude from code generation |
+| `generateMapper` | `boolean`      | false   | Whether to generate Mapper interfaces          |
+
+### Skip Plugin Execution
+
+You can skip the plugin execution in several ways:
+
+1. **Using properties in pom.xml:**
+
+```xml
+<properties>
+    <flex.gen.skip>true</flex.gen.skip>
+</properties>
+```
+
+2. **Using command line:**
+
+```bash
+mvn compile -Dflex.gen.skip=true
+```
+
+3. **Using profiles:**
+
+```xml
+<profiles>
+    <profile>
+        <id>skip-generation</id>
+        <properties>
+            <flex.gen.skip>true</flex.gen.skip>
+        </properties>
+    </profile>
+</profiles>
+```
+
+Then activate the profile:
+
+```bash
+mvn compile -Pskip-generation
+```
