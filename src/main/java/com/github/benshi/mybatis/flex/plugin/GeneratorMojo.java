@@ -123,6 +123,8 @@ public class GeneratorMojo extends AbstractMojo {
         if (config.isGenerateMapper()) {
             globalConfig.enableMapper()
                     .setMapperAnnotation(true);
+
+            globalConfig.enableMapperXml();
         }
 
         return globalConfig;
