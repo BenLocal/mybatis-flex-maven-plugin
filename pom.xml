@@ -16,7 +16,6 @@
         <maven.plugin.annotations.version>3.6.4</maven.plugin.annotations.version>
         <maven.project.version>2.2.1</maven.project.version>
         <mybatis-flex-codegen.version>1.10.9</mybatis-flex-codegen.version>
-        <mybatis-helper.version>main-SNAPSHOT</mybatis-helper.version>
     </properties>
 
     <dependencies>
@@ -60,12 +59,6 @@
             <groupId>com.mybatis-flex</groupId>
             <artifactId>mybatis-flex-core</artifactId>
             <version>1.10.9</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.benlocal</groupId>
-            <artifactId>mybatis-helper</artifactId>
-            <version>${mybatis-helper.version}</version>
         </dependency>
 
         <dependency>

@@ -10,9 +10,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import com.github.benshi.mybatis.handler.OptionalTypeHandlerFactory;
 import com.mybatisflex.codegen.Generator;
-import com.mybatisflex.codegen.config.ColumnConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
@@ -65,8 +63,6 @@ public class GeneratorMojo extends AbstractMojo {
             for (Column column : table.getColumns()) {
                 // Reset the property name to the original column name
                 resetJavaProperties(table, column);
-                // Set the column as optional if it is nullable
-                setOptionalProperties(table, column);
             }
         }
     }
@@ -80,31 +76,6 @@ public class GeneratorMojo extends AbstractMojo {
             getLog().warn(String.format(
                     "Column '%s' in table '%s' is renamed to '%s' to avoid conflicts with Java keywords.",
                     columnName, table.getName(), column.getProperty()));
-        }
-    }
-
-    private void setOptionalProperties(Table table, Column column) {
-        String columnName = column.getProperty();
-        if (column.getNullable() != null && column.getNullable() == 1) {
-            getLog().info(String.format(
-                    "Column '%s' in table '%s' is nullable, changing type to java.util.Optional<%s>.",
-                    columnName, table.getName(), column.getPropertyType()));
-
-            if (column.getColumnConfig() == null) {
-                ColumnConfig cc = new ColumnConfig()
-                        .setTypeHandler(
-                                OptionalTypeHandlerFactory.getTypeHandlerClazz(column.getPropertyType()));
-                column.setColumnConfig(cc);
-            } else {
-                ColumnConfig cc = column.getColumnConfig();
-                if (cc.getTypeHandler() == null) {
-                    cc.setTypeHandler(
-                            OptionalTypeHandlerFactory.getTypeHandlerClazz(column.getPropertyType()));
-                }
-            }
-
-            // Change the property type to Optional<>
-            column.setPropertyType("java.util.Optional<" + column.getPropertyType() + ">");
         }
     }
 
@@ -145,7 +116,9 @@ public class GeneratorMojo extends AbstractMojo {
                 .setWithLombok(false)
                 .setLombokNoArgsConstructorEnable(false)
                 .setLombokAllArgsConstructorEnable(false)
-                .setWithActiveRecord(false);
+                .setWithActiveRecord(false)
+                .setNullableAnnotation(true)
+                .setGetterMethodReturnOptional(true);
 
         if (config.isGenerateMapper()) {
             globalConfig.enableMapper()
