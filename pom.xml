@@ -17,6 +17,11 @@
         <maven.project.version>2.2.1</maven.project.version>
         <mybatis-flex-codegen.version>1.10.9</mybatis-flex-codegen.version>
         <mybatis-flex.version>1.10.9</mybatis-flex.version>
+        <javapoet.version>1.13.0</javapoet.version>
+        <hikaricp.version>4.0.3</hikaricp.version>
+        <jsr305.version>3.0.2</jsr305.version>
+        <palantir-java-format.version>1.1.0</palantir-java-format.version>
+        <junit.jupiter.version>5.11.0-M2</junit.jupiter.version>
     </properties>
 
     <dependencies>
@@ -59,32 +64,32 @@
         <dependency>
             <groupId>com.squareup</groupId>
             <artifactId>javapoet</artifactId>
-            <version>1.13.0</version>
+            <version>${javapoet.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>4.0.3</version>
+            <version>${hikaricp.version}</version>
             <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
-            <version>3.0.2</version>
+            <version>${jsr305.version}</version>
         </dependency>
         
         <dependency>
             <groupId>com.palantir.javaformat</groupId>
             <artifactId>palantir-java-format</artifactId>
-            <version>1.1.0</version>
+            <version>${palantir-java-format.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.11.0-M2</version>
+            <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
