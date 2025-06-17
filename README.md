@@ -93,6 +93,16 @@ mybatis-flex-maven-plugin is a Maven code generation plugin based on the MyBatis
 </dependency>
 ```
 
+# jsr305 dependency (only for java8)
+
+```xml
+<dependency>
+    <groupId>com.google.code.findbugs</groupId>
+    <artifactId>jsr305</artifactId>
+    <version>3.0.0</version>
+</dependency>
+```
+
 ### Configuration Options
 
 | Parameter        | Type           | Default | Description                                    |
