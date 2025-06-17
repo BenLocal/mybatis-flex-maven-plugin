@@ -10,6 +10,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
+import com.github.benshi.mybatis.flex.plugin.generator.PoetGenerator;
 import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.entity.Column;
@@ -41,7 +42,7 @@ public class GeneratorMojo extends AbstractMojo {
 
         GlobalConfig globalConfig = createGlobalConfig();
 
-        Generator generator = new Generator(dataSource, globalConfig);
+        Generator generator = new PoetGenerator(dataSource, globalConfig);
         List<Table> tables = generator.getTables();
         if (tables.isEmpty()) {
             getLog().warn("No tables found in the database. Please check your configuration.");
