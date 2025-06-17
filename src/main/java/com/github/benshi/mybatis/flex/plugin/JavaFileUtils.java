@@ -37,7 +37,7 @@ public class JavaFileUtils {
         if (!rewrite) {
             Path sourcePath = getSourcePath(javaFile, directory);
             if (sourcePath.toFile().exists()) {
-                System.out.printf("File %s already exists, skipping.%n", sourcePath);
+                LogHolder.info(String.format("File %s already exists, skipping.%n", sourcePath));
                 return;
             }
         }

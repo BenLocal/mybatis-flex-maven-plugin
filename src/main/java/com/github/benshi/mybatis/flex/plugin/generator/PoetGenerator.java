@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
+import org.apache.maven.plugin.logging.Log;
+
+import com.github.benshi.mybatis.flex.plugin.LogHolder;
 import com.github.benshi.mybatis.flex.plugin.generator.impl.EntityGenerator;
 import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.GlobalConfig;
@@ -14,11 +17,12 @@ import com.mybatisflex.codegen.dialect.IDialect;
 import com.mybatisflex.codegen.entity.Table;
 
 public class PoetGenerator extends Generator {
+
     public PoetGenerator(DataSource dataSource, GlobalConfig globalConfig) {
         super(dataSource, globalConfig);
     }
 
-    public PoetGenerator(DataSource dataSource, GlobalConfig globalConfig, IDialect dialect) {
+    public PoetGenerator(DataSource dataSource, GlobalConfig globalConfig, IDialect dialect, Log log) {
         super(dataSource, globalConfig, dialect);
     }
 
@@ -33,17 +37,18 @@ public class PoetGenerator extends Generator {
         try {
             generateWithError(tables);
         } catch (IOException e) {
-            System.err.println("Error generating code: " + e.getMessage());
+            LogHolder.error("Error generating code: " + e.getMessage());
             throw new RuntimeException("Code generation failed", e);
         }
     }
 
     public void generateWithError(List<Table> tables) throws IOException {
         if (tables == null || tables.isEmpty()) {
-            System.err.printf("table %s not found.%n", globalConfig.getGenerateTables());
+            LogHolder.error(String.format("table %s not found.%n", globalConfig.getGenerateTables()));
             return;
         } else {
-            System.out.printf("find tables: %s%n", tables.stream().map(Table::getName).collect(Collectors.toSet()));
+            LogHolder.info(String.format("find tables: %s%n",
+                    tables.stream().map(Table::getName).collect(Collectors.toSet())));
         }
 
         for (Table table : tables) {
@@ -51,6 +56,6 @@ public class PoetGenerator extends Generator {
                 generator.generate(table, globalConfig);
             }
         }
-        System.out.println("Code is generated successfully.");
+        LogHolder.info("Code is generated successfully.");
     }
 }

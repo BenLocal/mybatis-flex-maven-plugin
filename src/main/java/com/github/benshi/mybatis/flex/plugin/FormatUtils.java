@@ -58,7 +58,7 @@ public class FormatUtils {
             }
 
         } catch (IOException | FormatterException e) {
-            System.err.println("Failed to format file: " + javaFile + ", error: " + e.getMessage());
+            LogHolder.error("Failed to format file: " + javaFile + ", error: " + e.getMessage());
         }
     }
 

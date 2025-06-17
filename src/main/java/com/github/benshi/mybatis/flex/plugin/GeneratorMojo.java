@@ -32,6 +32,7 @@ public class GeneratorMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        LogHolder.setLog(getLog());
         if (skip) {
             getLog().info("Skipping MyBatis-Flex code generation (flex.gen.skip = true)");
             return;

@@ -9,6 +9,7 @@ import javax.lang.model.element.Modifier;
 
 import com.github.benshi.mybatis.flex.plugin.ColumnUtils;
 import com.github.benshi.mybatis.flex.plugin.JavaFileUtils;
+import com.github.benshi.mybatis.flex.plugin.LogHolder;
 import com.github.benshi.mybatis.flex.plugin.generator.IPoetGenerator;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.codegen.config.EntityConfig;
@@ -25,7 +26,6 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeSpec;
 
 public class EntityGenerator implements IPoetGenerator {
-
     @Override
     public void generate(Table table, GlobalConfig config) throws IOException {
         if (!config.isEntityGenerateEnable()) {
@@ -50,7 +50,7 @@ public class EntityGenerator implements IPoetGenerator {
             boolean rewrite = entityConfig.isOverwriteEnable();
             JavaFileUtils.writeJavaFile(javaFile, globalConfig.getSourceDir(), rewrite);
         } else {
-            System.err.printf("Failed to generate entity class for table %s.%n", table.getName());
+            LogHolder.error(String.format("Failed to generate entity class for table %s.%n", table.getName()));
         }
     }
 
@@ -65,7 +65,7 @@ public class EntityGenerator implements IPoetGenerator {
             boolean rewrite = entityConfig.isBaseOverwriteEnable();
             JavaFileUtils.writeJavaFile(javaFile, globalConfig.getSourceDir(), rewrite);
         } else {
-            System.err.printf("Failed to generate base entity class for table %s.%n", table.getName());
+            LogHolder.error(String.format("Failed to generate base entity class for table %s.%n", table.getName()));
         }
     }
 
