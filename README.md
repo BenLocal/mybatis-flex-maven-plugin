@@ -54,6 +54,13 @@ mybatis-flex-maven-plugin is a Maven code generation plugin based on the MyBatis
             <groupId>com.github.benlocal</groupId>
             <artifactId>mybatis-flex-maven-plugin</artifactId>
             <version>main-SNAPSHOT</version>
+            <dependencies>
+                <dependency>
+                    <groupId>com.mysql</groupId>
+                    <artifactId>mysql-connector-j</artifactId>
+                    <version>8.3.0</version>
+                </dependency>
+            </dependencies>
             <configuration>
                 <config>
                     <jdbcUrl>jdbc:mysql://localhost:3306/worker</jdbcUrl>

@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
-import org.apache.maven.plugin.logging.Log;
-
 import com.github.benshi.mybatis.flex.plugin.LogHolder;
 import com.github.benshi.mybatis.flex.plugin.generator.impl.EntityGenerator;
 import com.mybatisflex.codegen.Generator;
@@ -22,7 +20,7 @@ public class PoetGenerator extends Generator {
         super(dataSource, globalConfig);
     }
 
-    public PoetGenerator(DataSource dataSource, GlobalConfig globalConfig, IDialect dialect, Log log) {
+    public PoetGenerator(DataSource dataSource, GlobalConfig globalConfig, IDialect dialect) {
         super(dataSource, globalConfig, dialect);
     }
 
