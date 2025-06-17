@@ -24,6 +24,9 @@ public class GeneratorMojo extends AbstractMojo {
     @Parameter(property = "flex.gen.skip", defaultValue = "false")
     private boolean skip;
 
+    @Parameter(property = "flex.gen.format", defaultValue = "true")
+    private boolean enableFormatting;
+
     @Parameter
     private GeneratorConfig config;
 
@@ -49,6 +52,10 @@ public class GeneratorMojo extends AbstractMojo {
         }
 
         generator.generate(tables);
+
+        if (enableFormatting) {
+            FormatUtils.formatGeneratedFiles(project, config);
+        }
 
     }
 
