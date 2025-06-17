@@ -16,6 +16,7 @@
         <maven.plugin.annotations.version>3.6.4</maven.plugin.annotations.version>
         <maven.project.version>2.2.1</maven.project.version>
         <mybatis-flex-codegen.version>1.10.9</mybatis-flex-codegen.version>
+        <mybatis-flex.version>1.10.9</mybatis-flex.version>
     </properties>
 
     <dependencies>
@@ -52,7 +53,7 @@
         <dependency>
             <groupId>com.mybatis-flex</groupId>
             <artifactId>mybatis-flex-core</artifactId>
-            <version>1.10.9</version>
+            <version>${mybatis-flex.version}</version>
         </dependency>
 
         <dependency>

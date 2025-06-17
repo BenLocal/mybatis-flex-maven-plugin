@@ -26,6 +26,8 @@ public class EntityGeneratorTest {
         globalConfig.setBasePackage("com.github.benshi.mybatis.flex.plugin.generator.impl");
         globalConfig.setSourceDir(sourceDir);
         globalConfig.enableEntity()
+                .setOverwriteEnable(false)
+                .setBaseOverwriteEnable(true)
                 .setWithBaseClassEnable(withBaseClass);
 
         return globalConfig;
@@ -54,7 +56,22 @@ public class EntityGeneratorTest {
         column2.setPropertyType("java.lang.String");
         column2.setNullable(1);
         columns.add(column2);
-        table.setColumns(columns);
+        Column column3 = new Column();
+        column3.setColumnConfig(new ColumnConfig());
+        column3.setName("1to1");
+        column3.setComment("1to1 Column");
+        column3.setRawType("varchar");
+        column3.setPropertyType("java.lang.String");
+        column3.setNullable(1);
+        columns.add(column3);
+        Column column4 = new Column();
+        column4.setColumnConfig(new ColumnConfig());
+        column4.setName("switch");
+        column4.setComment("switch Column");
+        column4.setRawType("varchar");
+        column4.setPropertyType("java.lang.String");
+        column4.setNullable(1);
+        columns.add(column4);
         table.setColumns(columns);
         table.setGlobalConfig(globalConfig);
         return table;

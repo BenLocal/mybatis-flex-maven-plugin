@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.lang.model.element.Modifier;
 
+import com.github.benshi.mybatis.flex.plugin.ColumnUtils;
 import com.github.benshi.mybatis.flex.plugin.JavaFileWriter;
 import com.github.benshi.mybatis.flex.plugin.generator.IPoetGenerator;
 import com.mybatisflex.annotation.KeyType;
@@ -40,14 +41,14 @@ public class EntityGenerator implements IPoetGenerator {
         JavaFile javaFile = null;
         if (!entityConfig.isWithBaseClassEnable()) {
             javaFile = createJavaFile(table, globalConfig, false);
-
         } else {
             // enable base class generation
             javaFile = createJavaFileWithBase(table, globalConfig);
         }
 
         if (javaFile != null) {
-            JavaFileWriter.writeJavaFile(javaFile, globalConfig.getSourceDir());
+            boolean rewrite = entityConfig.isOverwriteEnable();
+            JavaFileWriter.writeJavaFile(javaFile, globalConfig.getSourceDir(), rewrite);
         } else {
             System.err.printf("Failed to generate entity class for table %s.%n", table.getName());
         }
@@ -61,7 +62,8 @@ public class EntityGenerator implements IPoetGenerator {
 
         JavaFile javaFile = createJavaFile(table, globalConfig, true);
         if (javaFile != null) {
-            JavaFileWriter.writeJavaFile(javaFile, globalConfig.getSourceDir());
+            boolean rewrite = entityConfig.isBaseOverwriteEnable();
+            JavaFileWriter.writeJavaFile(javaFile, globalConfig.getSourceDir(), rewrite);
         } else {
             System.err.printf("Failed to generate base entity class for table %s.%n", table.getName());
         }
@@ -138,9 +140,10 @@ public class EntityGenerator implements IPoetGenerator {
 
         for (Column column : table.getColumns()) {
             ClassName columnType = ClassName.bestGuess(column.getPropertyType());
+            String columnName = ColumnUtils.getColumnName(column.getProperty());
 
             FieldSpec.Builder field = FieldSpec
-                    .builder(columnType, column.getProperty(), Modifier.PRIVATE);
+                    .builder(columnType, columnName, Modifier.PRIVATE);
 
             if (column.isPrimaryKey()) {
                 field.addAnnotation(AnnotationSpec.builder(com.mybatisflex.annotation.Id.class)
@@ -152,12 +155,12 @@ public class EntityGenerator implements IPoetGenerator {
                     .addMember("value", "$S", column.getName())
                     .build());
 
-            String methodName = firstCharToUpperCase(column.getProperty());
+            String methodName = firstCharToUpperCase(columnName);
             MethodSpec.Builder getterMethod = MethodSpec.methodBuilder("get" + methodName)
                     .addModifiers(Modifier.PUBLIC)
                     .returns(columnType)
-                    .addStatement("return $N", column.getProperty())
-                    .addJavadoc("Gets the value of the $L property.\n", column.getProperty())
+                    .addStatement("return $N", columnName)
+                    .addJavadoc("Gets the value of the $L property.\n", columnName)
                     .addJavadoc("\n");
             if (column.getComment() != null && !column.getComment().isEmpty()) {
                 getterMethod.addJavadoc("<pre>\n")
@@ -173,9 +176,13 @@ public class EntityGenerator implements IPoetGenerator {
 
             MethodSpec.Builder setterMethod = MethodSpec.methodBuilder("set" + methodName)
                     .addModifiers(Modifier.PUBLIC)
-                    .addParameter(columnType, column.getProperty())
-                    .addStatement("this.$N = $N", column.getProperty(), column.getProperty())
-                    .addJavadoc("Sets the value of the $L property.\n", column.getProperty())
+                    .addParameter(columnType,
+                            columnName)
+                    .addStatement("this.$N = $N",
+                            columnName,
+                            columnName)
+                    .addJavadoc("Sets the value of the $L property.\n",
+                            columnName)
                     .addJavadoc("\n");
 
             if (column.getComment() != null && !column.getComment().isEmpty()) {
@@ -184,7 +191,7 @@ public class EntityGenerator implements IPoetGenerator {
                         .addJavadoc("</pre>\n")
                         .addJavadoc("\n");
             }
-            getterMethod.addJavadoc("@param $N the new value for the property\n", column.getProperty());
+            getterMethod.addJavadoc("@param $N the new value for the property\n", columnName);
 
             ParameterizedTypeName optionalType = ParameterizedTypeName.get(
                     ClassName.get(java.util.Optional.class),
@@ -192,8 +199,10 @@ public class EntityGenerator implements IPoetGenerator {
             MethodSpec.Builder optionalMethod = MethodSpec.methodBuilder("get" + methodName + "WithOptional")
                     .addModifiers(Modifier.PUBLIC)
                     .returns(optionalType)
-                    .addStatement("return Optional.ofNullable($N)", column.getProperty())
-                    .addJavadoc("Gets the value of the $L property wrapped in an Optional.\n", column.getProperty())
+                    .addStatement("return Optional.ofNullable($N)",
+                            columnName)
+                    .addJavadoc("Gets the value of the $L property wrapped in an Optional.\n",
+                            columnName)
                     .addJavadoc("\n")
                     .addAnnotation(
                             AnnotationSpec.builder(

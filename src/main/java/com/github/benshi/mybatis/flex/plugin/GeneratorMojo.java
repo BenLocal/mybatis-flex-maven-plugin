@@ -13,7 +13,6 @@ import org.apache.maven.project.MavenProject;
 import com.github.benshi.mybatis.flex.plugin.generator.PoetGenerator;
 import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.GlobalConfig;
-import com.mybatisflex.codegen.entity.Column;
 import com.mybatisflex.codegen.entity.Table;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -49,48 +48,8 @@ public class GeneratorMojo extends AbstractMojo {
             return;
         }
 
-        resetTables(tables);
-
         generator.generate(tables);
 
-    }
-
-    private void resetTables(List<Table> tables) {
-        for (Table table : tables) {
-            if (table.getColumns() == null || table.getColumns().isEmpty()) {
-                continue;
-            }
-
-            for (Column column : table.getColumns()) {
-                // Reset the property name to the original column name
-                resetJavaProperties(table, column);
-            }
-        }
-    }
-
-    private void resetJavaProperties(Table table, Column column) {
-        String columnName = column.getProperty();
-        if (JavaKeywordsUtils.isJavaKeyword(columnName) ||
-                JavaKeywordsUtils.startWithNumberKeyword(columnName)) {
-            // If the column name is a Java keyword or starts with a number,
-            column.setProperty(renameProperty(columnName));
-            getLog().warn(String.format(
-                    "Column '%s' in table '%s' is renamed to '%s' to avoid conflicts with Java keywords.",
-                    columnName, table.getName(), column.getProperty()));
-        }
-    }
-
-    private String renameProperty(String property) {
-        if (property == null || property.isEmpty()) {
-            return property;
-        }
-
-        String tmp = property.trim();
-        if (Character.isLowerCase(property.charAt(0))) {
-            tmp = Character.toUpperCase(property.charAt(0)) + property.substring(1);
-        }
-
-        return String.format("valueOf%s", tmp);
     }
 
     private GlobalConfig createGlobalConfig() {
@@ -111,15 +70,10 @@ public class GeneratorMojo extends AbstractMojo {
                 .setBaseOverwriteEnable(true)
                 .setAlwaysGenColumnAnnotation(true)
                 .setOverwriteEnable(false)
-                // Disable the generation of Lombok annotations
-                // and constructors to avoid conflicts with Lombok
-                // and to keep the generated code clean.
                 .setWithLombok(false)
                 .setLombokNoArgsConstructorEnable(false)
                 .setLombokAllArgsConstructorEnable(false)
-                .setWithActiveRecord(false)
-                .setNullableAnnotation(true)
-                .setGetterMethodReturnOptional(true);
+                .setWithActiveRecord(false);
 
         if (config.isGenerateMapper()) {
             globalConfig.enableMapper()
