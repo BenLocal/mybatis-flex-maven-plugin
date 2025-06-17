@@ -74,25 +74,6 @@ mybatis-flex-maven-plugin is a Maven code generation plugin based on the MyBatis
 </build>
 ```
 
-# mybatis-helper dependency
-
-```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-```
-
-```xml
-<dependency>
-    <groupId>com.github.benlocal</groupId>
-    <artifactId>mybatis-helper</artifactId>
-    <version>main-SNAPSHOT</version>
-</dependency>
-```
-
 # jsr305 dependency (only for java8)
 
 ```xml
